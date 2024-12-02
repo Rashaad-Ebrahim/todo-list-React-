@@ -1,25 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
+const tasks = [
+  {
+    id: 1,
+    text: "Doctor Appointment",
+    completed: true,
+  },
+  {
+    id: 2,
+    text: "Meeting at School",
+    completed: false,
+  },
+  {
+    id: 3,
+    text: "Meeting at work",
+    completed: false,
+  },
+];
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <TodoList />
     </div>
   );
 }
 
-export default App;
+function TodoList() {
+  return (
+    <div>
+      <Header />
+      <InputForm />
+      <List />
+    </div>
+  );
+}
+
+function Header() {
+  return <h1>TODO LIST</h1>;
+}
+
+function InputForm() {
+  return (
+    <form>
+      <input type="text" />
+      <button>Add Task</button>
+    </form>
+  );
+}
+
+function List() {
+  return (
+    <div>
+      <ul>
+        {tasks.map( task => <li>task</li>)}
+      </ul>
+
+      <select name="filter">
+        <option>All</option>
+        <option>Done</option>
+        <option>Todo</option>
+
+      </select>
+
+      <select name="filter">
+        <option>Sort by Input Order</option>
+        <option>Sort by Description</option>
+        <option>Sort by Status</option>
+
+      </select>
+
+    </div>
+  );
+}
+
+function Stats() {
+  return <div></div>;
+}
