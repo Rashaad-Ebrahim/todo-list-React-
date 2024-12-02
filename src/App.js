@@ -4,17 +4,27 @@ import headerLogo from "./img/outline-check.svg";
 const tasks = [
   {
     id: 1,
-    todo: "Doctor Appointment",
+    todo: "Meeting at School",
     done: true,
   },
   {
     id: 2,
-    todo: "Meeting at School",
+    todo: "Doctor Appointment",
     done: false,
   },
   {
     id: 3,
     todo: "Meeting at work",
+    done: false,
+  },
+  {
+    id: 4,
+    todo: "Eat supper",
+    done: true,
+  },
+  {
+    id: 5,
+    todo: "Learn React",
     done: false,
   },
 ];
@@ -79,21 +89,42 @@ function InputForm({ onAddTodo }) {
 }
 
 function List({ todoItems }) {
+  const [filterBy, setFilterBy] = useState("all");
+  const [sortBy, setSortBy] = useState("input");
+
+  function handleFilter(e) {
+    setFilterBy(e.target.value);
+  }
+
+  let arrangedTodoItems =
+    (filterBy === "all" && todoItems) ||
+    (filterBy === "done" && todoItems.filter((item) => item.done === true)) ||
+    (filterBy === "todo" && todoItems.filter((item) => item.done === false));
+
+  arrangedTodoItems =
+    (sortBy === "input" && arrangedTodoItems) ||
+    (sortBy === "todo" &&
+      arrangedTodoItems.slice().sort((a, b) => a.todo.localeCompare(b.todo))) ||
+    (sortBy === "done" &&
+      arrangedTodoItems.slice().sort((a, b) => a.done - b.done));
+
   return (
     <div>
-      <select name="filter">
-        <option>All</option>
-        <option>Done</option>
-        <option>Todo</option>
-      </select>
+      <div className="actions">
+        <select value={filterBy} onChange={handleFilter}>
+          <option value="all">All</option>
+          <option value="done">Done</option>
+          <option value="todo">Todo</option>
+        </select>
 
-      <select name="filter">
-        <option>Sort by Input Order</option>
-        <option>Sort by Description</option>
-        <option>Sort by Status</option>
-      </select>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="input">Sort by Input Order</option>
+          <option value="todo">Sort by Description</option>
+          <option value="done">Sort by Status</option>
+        </select>
+      </div>
       <ul>
-        {todoItems.map((todoItem) => (
+        {arrangedTodoItems.map((todoItem) => (
           <li key={todoItem.id}>{todoItem.todo}</li>
         ))}
       </ul>
