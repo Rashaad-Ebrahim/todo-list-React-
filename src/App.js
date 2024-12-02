@@ -1,33 +1,7 @@
 import { useState } from "react";
 import headerLogo from "./img/outline-check.svg";
+import deleteIcon from "./img/delete.svg";
 
-const tasks = [
-  {
-    id: 1,
-    todo: "Meeting at School",
-    done: true,
-  },
-  {
-    id: 2,
-    todo: "Doctor Appointment",
-    done: false,
-  },
-  {
-    id: 3,
-    todo: "Meeting at work",
-    done: false,
-  },
-  {
-    id: 4,
-    todo: "Eat supper",
-    done: true,
-  },
-  {
-    id: 5,
-    todo: "Learn React",
-    done: false,
-  },
-];
 
 export default function App() {
   return (
@@ -39,17 +13,25 @@ export default function App() {
 
 function TodoList() {
   // const [todoItems, setTodoItems] = useState([]);
-  const [todoItems, setTodoItems] = useState(tasks);
+  const [todoItems, setTodoItems] = useState([]);
 
-  function addTodo(item) {
+  function handleAddTodo(item) {
     setTodoItems((items) => [...items, item]);
+  }
+
+  function handleToggleTodo(id) {
+    setTodoItems((todoItems) =>
+      todoItems.map((todoItem) =>
+        todoItem.id === id ? { ...todoItem, done: !todoItem.done } : todoItem
+      )
+    );
   }
 
   return (
     <div>
       <Header />
-      <InputForm onAddTodo={addTodo} />
-      <List todoItems={todoItems} />
+      <InputForm onAddTodo={handleAddTodo} />
+      <List todoItems={todoItems} onToggleTodo={handleToggleTodo} />
       <Stats todoItems={todoItems} />
     </div>
   );
@@ -88,13 +70,9 @@ function InputForm({ onAddTodo }) {
   );
 }
 
-function List({ todoItems }) {
+function List({ todoItems, onToggleTodo }) {
   const [filterBy, setFilterBy] = useState("all");
   const [sortBy, setSortBy] = useState("input");
-
-  function handleFilter(e) {
-    setFilterBy(e.target.value);
-  }
 
   let arrangedTodoItems =
     (filterBy === "all" && todoItems) ||
@@ -111,7 +89,7 @@ function List({ todoItems }) {
   return (
     <div>
       <div className="actions">
-        <select value={filterBy} onChange={handleFilter}>
+        <select value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
           <option value="all">All</option>
           <option value="done">Done</option>
           <option value="todo">Todo</option>
@@ -123,9 +101,24 @@ function List({ todoItems }) {
           <option value="done">Sort by Status</option>
         </select>
       </div>
+
       <ul>
         {arrangedTodoItems.map((todoItem) => (
-          <li key={todoItem.id}>{todoItem.todo}</li>
+          <li
+            className="todo-list-items"
+            key={todoItem.id}
+            style={todoItem.done ? { textDecoration: "line-through" } : {}}
+          >
+            <input
+              type="checkbox"
+              value={todoItem.done}
+              onChange={() => onToggleTodo(todoItem.id)}
+            />
+            {todoItem.todo}
+            <button className="delete-btn">
+              <img src={deleteIcon} alt="Delete icon" />
+            </button>
+          </li>
         ))}
       </ul>
     </div>

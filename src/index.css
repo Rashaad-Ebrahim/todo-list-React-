@@ -20,6 +20,12 @@ ul {
   list-style: none;
 }
 
+input[type="checkbox"] {
+  /* height: 12px;
+  width: 12px; */
+  accent-color: var(--accent);
+}
+
 .app {
   max-width: 600px;
   margin: 0 auto;
@@ -36,6 +42,19 @@ ul {
   width: 32px;
   height: 32px;
 
+}
+
+.todo-list-items {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 12px;
+}
+
+.delete-btn {
+  border: none;
+  background-color: inherit;
+  width: 20px;
+  height: 20px;
 }
 
 /* Color: #3F51B5 */
