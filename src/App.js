@@ -29,7 +29,7 @@ export default function App() {
 
 function TodoList() {
   // const [todoItems, setTodoItems] = useState([]);
-  const [todoItems, setTodoItems] = useState([]);
+  const [todoItems, setTodoItems] = useState(tasks);
 
   function addTodo(item) {
     setTodoItems((items) => [...items, item]);
@@ -102,5 +102,14 @@ function List({ todoItems }) {
 }
 
 function Stats({ todoItems }) {
-  return <div>{todoItems.length !== 0 && <p>X of Y complete</p>}</div>;
+  const doneItems = todoItems.filter((item) => item.done === true).length;
+  return (
+    <div>
+      {todoItems.length !== 0 && (
+        <p>
+          {doneItems} of {todoItems.length} complete
+        </p>
+      )}
+    </div>
+  );
 }
