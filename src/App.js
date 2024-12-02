@@ -3,15 +3,6 @@ import headerLogo from "./img/outline-check.svg";
 import deleteIcon from "./img/delete.svg";
 
 export default function App() {
-  return (
-    <div className="app">
-      <TodoList />
-    </div>
-  );
-}
-
-function TodoList() {
-  // const [todoItems, setTodoItems] = useState([]);
   const [todoItems, setTodoItems] = useState([]);
 
   function handleAddTodo(todoItem) {
@@ -33,7 +24,7 @@ function TodoList() {
   }
 
   return (
-    <div>
+    <div div className="app">
       <Header />
       <InputForm onAddTodo={handleAddTodo} />
       <List
@@ -48,10 +39,10 @@ function TodoList() {
 
 function Header() {
   return (
-    <span className="header">
-      <img className="headerLogo" src={headerLogo} alt="Checkbox logo" />
+    <header className="header">
+      <img className="header-img" src={headerLogo} alt="Checkbox logo" />
       <h1>TODO LIST</h1>
-    </span>
+    </header>
   );
 }
 
@@ -68,13 +59,14 @@ function InputForm({ onAddTodo }) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="add-form" onSubmit={handleSubmit}>
       <input
+      className="form-input"
         type="text"
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
       />
-      <button>Add Task</button>
+      <button className="add-btn">Add</button>
     </form>
   );
 }
@@ -111,10 +103,10 @@ function List({ todoItems, onToggleTodo, onDeleteTodo }) {
         </select>
       </div>
 
-      <ul>
+      <ul className="todo-list">
         {arrangedTodoItems.map((todoItem) => (
           <li
-            className="todo-list-items"
+            className="todo-list-item"
             key={todoItem.id}
             style={todoItem.done ? { textDecoration: "line-through" } : {}}
           >
@@ -124,7 +116,10 @@ function List({ todoItems, onToggleTodo, onDeleteTodo }) {
               onChange={() => onToggleTodo(todoItem.id)}
             />
             {todoItem.todo}
-            <button className="delete-btn" onClick={() => onDeleteTodo(todoItem.id)}>
+            <button
+              className="delete-btn"
+              onClick={() => onDeleteTodo(todoItem.id)}
+            >
               <img src={deleteIcon} alt="Delete icon" />
             </button>
           </li>
@@ -137,10 +132,11 @@ function List({ todoItems, onToggleTodo, onDeleteTodo }) {
 function Stats({ todoItems }) {
   const doneItems = todoItems.filter((item) => item.done === true).length;
   return (
-    <div>
+    <div className="stats">
       {todoItems.length !== 0 && (
         <p>
-          {doneItems} of {todoItems.length} complete
+          {doneItems} of {todoItems.length}{" "}
+          {todoItems.length > 1 ? "tasks" : "task"} complete
         </p>
       )}
     </div>
