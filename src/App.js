@@ -2,7 +2,6 @@ import { useState } from "react";
 import headerLogo from "./img/outline-check.svg";
 import deleteIcon from "./img/delete.svg";
 
-
 export default function App() {
   return (
     <div className="app">
@@ -15,8 +14,8 @@ function TodoList() {
   // const [todoItems, setTodoItems] = useState([]);
   const [todoItems, setTodoItems] = useState([]);
 
-  function handleAddTodo(item) {
-    setTodoItems((items) => [...items, item]);
+  function handleAddTodo(todoItem) {
+    setTodoItems((todoItems) => [...todoItems, todoItem]);
   }
 
   function handleToggleTodo(id) {
@@ -27,11 +26,21 @@ function TodoList() {
     );
   }
 
+  function handleDeleteTodo(id) {
+    setTodoItems((todoItems) =>
+      todoItems.filter((todoItem) => todoItem.id !== id)
+    );
+  }
+
   return (
     <div>
       <Header />
       <InputForm onAddTodo={handleAddTodo} />
-      <List todoItems={todoItems} onToggleTodo={handleToggleTodo} />
+      <List
+        todoItems={todoItems}
+        onToggleTodo={handleToggleTodo}
+        onDeleteTodo={handleDeleteTodo}
+      />
       <Stats todoItems={todoItems} />
     </div>
   );
@@ -70,7 +79,7 @@ function InputForm({ onAddTodo }) {
   );
 }
 
-function List({ todoItems, onToggleTodo }) {
+function List({ todoItems, onToggleTodo, onDeleteTodo }) {
   const [filterBy, setFilterBy] = useState("all");
   const [sortBy, setSortBy] = useState("input");
 
@@ -115,7 +124,7 @@ function List({ todoItems, onToggleTodo }) {
               onChange={() => onToggleTodo(todoItem.id)}
             />
             {todoItem.todo}
-            <button className="delete-btn">
+            <button className="delete-btn" onClick={() => onDeleteTodo(todoItem.id)}>
               <img src={deleteIcon} alt="Delete icon" />
             </button>
           </li>
